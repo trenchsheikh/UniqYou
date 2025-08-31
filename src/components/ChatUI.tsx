@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Bot, User } from 'lucide-react';
-import type { ChatMessage } from '../types';
+import { Send, Bot } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { cn } from '../lib/utils';
 
@@ -48,12 +47,6 @@ export const ChatUI: React.FC<ChatUIProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
-
-  const scrollToBottom = () => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-    }
-  };
 
   const smoothScrollToBottom = () => {
     if (messagesContainerRef.current) {

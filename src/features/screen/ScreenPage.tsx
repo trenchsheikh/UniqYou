@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Check, Eye } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { GlassCard } from '../../components/GlassCard';
 import { ProgressBar } from '../../components/ProgressBar';
 import { QuestionCard } from '../../components/QuestionCard';

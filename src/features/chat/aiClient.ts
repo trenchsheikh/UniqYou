@@ -285,7 +285,6 @@ Current context:`;
 
   private generateContextualResponse(message: string): AIResponse {
     // Fallback response if API fails
-    const results = this.context.results || [];
     
     if (message.includes('help') || message.includes('support')) {
       return {

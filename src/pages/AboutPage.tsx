@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Brain, Shield, AlertTriangle, Mail, Heart, MessageCircle } from 'lucide-react';
+import { Shield, AlertTriangle, Mail, Heart, MessageCircle } from 'lucide-react';
 import { GlassCard } from '../components/GlassCard';
 import { accessibility } from '../lib/accessibility';
 
