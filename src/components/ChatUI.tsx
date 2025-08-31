@@ -46,7 +46,6 @@ export const ChatUI: React.FC<ChatUIProps> = ({
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
 
   const smoothScrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -54,15 +53,6 @@ export const ChatUI: React.FC<ChatUIProps> = ({
         top: messagesContainerRef.current.scrollHeight,
         behavior: 'smooth'
       });
-    }
-  };
-
-  const handleScroll = () => {
-    if (messagesContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
-      // If user is near bottom, enable auto-scroll
-      const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
-      setShouldAutoScroll(isNearBottom);
     }
   };
 
@@ -107,7 +97,16 @@ export const ChatUI: React.FC<ChatUIProps> = ({
   return (
     <GlassCard className={cn('h-full flex flex-col', className)}>
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={messagesContainerRef} onScroll={handleScroll}>
+      <div 
+        className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide" 
+        ref={messagesContainerRef}
+        style={{
+          // iOS-specific scrollbar hiding
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        }}
+      >
         {messages.length === 0 ? (
           <div className="text-center text-slate-500 dark:text-slate-400 py-8">
             <Bot className="w-12 h-12 mx-auto mb-4 opacity-50" />
@@ -128,6 +127,7 @@ export const ChatUI: React.FC<ChatUIProps> = ({
               <div
                 className={cn(
                   'max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-2xl',
+                  'shadow-sm chat-message',
                   message.role === 'user'
                     ? 'bg-primary-500 text-white rounded-br-md'
                     : 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-bl-md'
@@ -145,7 +145,7 @@ export const ChatUI: React.FC<ChatUIProps> = ({
         {/* Typing Message */}
         {typingMessage && (
           <div className="flex justify-start">
-            <div className="max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-bl-md">
+            <div className="max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-bl-md shadow-sm chat-message">
               <p className="text-sm leading-relaxed">
                 {typingMessage}
                 <span className="inline-block w-2 h-4 bg-slate-400 ml-1 animate-pulse"></span>
@@ -154,46 +154,51 @@ export const ChatUI: React.FC<ChatUIProps> = ({
           </div>
         )}
         
-        {/* Scroll to Bottom Button */}
-        {!shouldAutoScroll && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => {
-                setShouldAutoScroll(true);
-                smoothScrollToBottom();
-              }}
-              className="px-3 py-2 rounded-lg bg-primary-500 text-white text-sm hover:bg-primary-600 transition-colors duration-200 flex items-center space-x-2"
-            >
-              <span>↓</span>
-              <span>New Messages</span>
-            </button>
-          </div>
-        )}
-        
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="p-4 border-t border-white/20 dark:border-slate-700/30">
-        <form onSubmit={handleSubmit} className="flex space-x-3">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
-            className="flex-1 glass-input"
-            disabled={isLoading}
-            aria-label="Type your message"
-          />
+      {/* Input - iOS Optimized */}
+      <div className="p-4 border-t border-white/20 dark:border-slate-700/30 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+        <form onSubmit={handleSubmit} className="flex space-x-3 items-end">
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Type your message..."
+              className={cn(
+                'w-full px-4 py-3 rounded-2xl ios-input',
+                'bg-white/80 dark:bg-slate-700/80',
+                'border border-slate-200 dark:border-slate-600',
+                'text-slate-800 dark:text-slate-200',
+                'placeholder-slate-400 dark:placeholder-slate-500',
+                'focus:outline-none focus:ring-2 focus:ring-primary-500/50',
+                'focus:border-primary-500',
+                'transition-all duration-200',
+                'shadow-sm'
+              )}
+              disabled={isLoading}
+              aria-label="Type your message"
+              // iOS-specific attributes
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="sentences"
+              spellCheck="true"
+            />
+          </div>
           <button
             type="submit"
             disabled={!inputValue.trim() || isLoading}
             className={cn(
-              'p-3 rounded-xl transition-all duration-200',
-              'bg-primary-500 hover:bg-primary-600 disabled:bg-slate-300 dark:disabled:bg-slate-600',
+              'px-4 py-3 rounded-2xl transition-all duration-200 ios-button',
+              'bg-primary-500 hover:bg-primary-600 active:bg-primary-700',
+              'disabled:bg-slate-300 dark:disabled:bg-slate-600',
               'text-white disabled:text-slate-500 dark:disabled:text-slate-400',
-              'focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:outline-none'
+              'focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:outline-none',
+              'shadow-sm hover:shadow-md',
+              'flex items-center justify-center',
+              'z-10 relative'
             )}
             aria-label="Send message"
           >

@@ -50,3 +50,38 @@
     text-wrap: balance;
   }
 }
+
+/* Custom scrollbar hiding for iOS */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* iOS-specific input optimizations */
+.ios-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 16px;
+  font-size: 16px; /* Prevents zoom on iOS */
+  line-height: 1.2;
+}
+
+/* iOS button optimizations */
+.ios-button {
+  min-height: 44px;
+  min-width: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Chat message optimizations */
+.chat-message {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}

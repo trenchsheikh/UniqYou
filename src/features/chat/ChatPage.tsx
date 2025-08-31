@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, Bot, Settings, Trash2 } from 'lucide-react';
+import { Settings, ArrowLeft } from 'lucide-react';
 import { GlassCard } from '../../components/GlassCard';
 import { ChatUI } from '../../components/ChatUI';
 import { aiClient } from './aiClient';
-import type { AIContext } from './aiClient';
 import { storage } from '../../lib/storage';
 import { accessibility } from '../../lib/accessibility';
 import type { ChatMessage } from '../../types';
+import { Toast } from '../../components/Toast';
 
 interface ChatPageProps {
   onNavigate: (page: string) => void;
@@ -18,8 +18,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [userPreferences, setUserPreferences] = useState(storage.loadPreferences());
   const [apiAvailable, setApiAvailable] = useState(true);
-  const [typingMessage, setTypingMessage] = useState<string>('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
     const results = storage.loadResults();
     const responses = storage.loadResponses();
     
-    const context: AIContext = {
+    const context = {
       results,
       responses,
       userPreferences
@@ -91,8 +90,8 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
       const aiResponse = await aiClient.ask(message);
       
       // Start typing animation
-      setIsTyping(true);
-      setTypingMessage('');
+      // setIsTyping(true); // Removed
+      // setTypingMessage(''); // Removed
       
       // Small delay before starting to type
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -101,7 +100,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
       const words = aiResponse.message.split(' ');
       for (let i = 0; i < words.length; i++) {
         await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 100));
-        setTypingMessage(prev => prev + (i === 0 ? '' : ' ') + words[i]);
+        // setTypingMessage(prev => prev + (i === 0 ? '' : ' ') + words[i]); // Removed
       }
       
       // Complete the message
@@ -113,8 +112,8 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
       };
 
       setMessages(prev => [...prev, assistantMessage]);
-      setIsTyping(false);
-      setTypingMessage('');
+      // setIsTyping(false); // Removed
+      // setTypingMessage(''); // Removed
     } catch (error) {
       console.error('AI response error:', error);
       
@@ -126,121 +125,132 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
       };
 
       setMessages(prev => [...prev, errorMessage]);
-      setIsTyping(false);
-      setTypingMessage('');
+      // setIsTyping(false); // Removed
+      // setTypingMessage(''); // Removed
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleClearChat = () => {
-    if (confirm('Are you sure you want to clear the chat history?')) {
-      setMessages([]);
-    }
-  };
 
-  const handleToggleAIAccess = () => {
-    const newPreferences = {
-      ...userPreferences,
-      allowAIChat: !userPreferences.allowAIChat
-    };
-    
-    setUserPreferences(newPreferences);
-    storage.savePreferences(newPreferences);
-    
-    // Update AI context
-    const results = storage.loadResults();
-    const responses = storage.loadResponses();
-    
-    const context: AIContext = {
-      results: newPreferences.allowAIChat ? results : [],
-      responses: newPreferences.allowAIChat ? responses : [],
-      userPreferences: newPreferences
-    };
-    
-    aiClient.setContext(context);
-  };
-
-  const hasResults = storage.loadResults().length > 0;
 
   return (
-    <div className="min-h-screen pb-20 pt-8 px-4">
-      <div className="container mx-auto max-w-4xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Header */}
-        <GlassCard className="mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white">
-                <Bot className="w-6 h-6" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
-                  Chat with AI Dr. Chen
-                </h1>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Your AI companion for learning and attention support
-                </p>
-                <div className="flex items-center mt-2 space-x-2">
-                  <div className={`w-2 h-2 rounded-full ${apiAvailable ? 'bg-green-500' : 'bg-amber-500'}`}></div>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">
-                    {apiAvailable ? 'AI Connected' : 'Offline Mode'}
-                  </span>
-                </div>
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={() => onNavigate('home')}
+              className="p-2 rounded-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/20 dark:border-slate-700/30 hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 shadow-sm"
+              aria-label="Go back to home"
+            >
+              <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+            </button>
+            
+            <div className="flex-1 text-center">
+              <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
+                Chat with AI Dr. Chen
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Your AI companion for learning and attention support
+              </p>
+              <div className="flex items-center justify-center mt-2 space-x-2">
+                <div className={`w-2 h-2 rounded-full ${apiAvailable ? 'bg-green-500' : 'bg-amber-500'}`}></div>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  {apiAvailable ? 'AI Connected' : 'Offline Mode'}
+                </span>
               </div>
             </div>
             
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setShowSettings(!showSettings)}
-                className="p-2 rounded-xl glass hover:bg-white/20 dark:hover:bg-slate-800/30 transition-colors"
-                aria-label="Settings"
-              >
-                <Settings className="w-5 h-5" />
-              </button>
-              <button
-                onClick={handleClearChat}
-                className="p-2 rounded-xl glass hover:bg-white/20 dark:hover:bg-slate-800/30 transition-colors text-red-500 hover:text-red-600"
-                aria-label="Clear chat"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
-            </div>
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className="p-2 rounded-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/20 dark:border-slate-700/30 hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 shadow-sm"
+              aria-label="Chat settings"
+            >
+              <Settings className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+            </button>
           </div>
-        </GlassCard>
+        </div>
 
         {/* Settings Panel */}
         {showSettings && (
-          <GlassCard className="mb-6 p-4">
-            <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3">
+          <GlassCard className="mb-6 p-6">
+            <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
               Chat Settings
-            </h3>
-            
-            <div className="space-y-3">
-              <label className="flex items-center space-x-3 cursor-pointer">
+            </h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <label htmlFor="ai-access" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Allow AI to access screening data
+                </label>
                 <input
+                  id="ai-access"
                   type="checkbox"
                   checked={userPreferences.allowAIChat}
-                  onChange={handleToggleAIAccess}
-                  className="w-4 h-4 text-primary-600 rounded border-slate-300 focus:ring-primary-500"
+                  onChange={(e) => {
+                    const newPrefs = { ...userPreferences, allowAIChat: e.target.checked };
+                    setUserPreferences(newPrefs);
+                    storage.savePreferences(newPrefs);
+                    
+                    // Update AI context
+                    const results = storage.loadResults();
+                    const responses = storage.loadResponses();
+                    aiClient.setContext({ results, responses, userPreferences: newPrefs });
+                  }}
+                  className="w-4 h-4 text-primary-500 bg-slate-100 border-slate-300 rounded focus:ring-primary-500 focus:ring-2"
                 />
-                <span className="text-sm text-slate-700 dark:text-slate-300">
-                  Allow AI to use my screening responses for personalized help
-                </span>
-              </label>
+              </div>
               
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                When enabled, the AI can provide more tailored advice based on your screening results. 
-                Your data remains private and local.
-              </p>
+              <div className="flex items-center justify-between">
+                <label htmlFor="dark-mode" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Dark Mode
+                </label>
+                <select
+                  id="dark-mode"
+                  value={userPreferences.darkMode}
+                  onChange={(e) => {
+                    const newPrefs = { ...userPreferences, darkMode: e.target.value as 'light' | 'dark' | 'auto' };
+                    setUserPreferences(newPrefs);
+                    storage.savePreferences(newPrefs);
+                    
+                    // Apply theme
+                    if (newPrefs.darkMode === 'dark' || (newPrefs.darkMode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      document.documentElement.classList.remove('dark');
+                    }
+                  }}
+                  className="px-3 py-2 text-sm bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="auto">Auto</option>
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
+              
+              <button
+                onClick={() => {
+                  storage.clearAll();
+                  setMessages([]);
+                  setUserPreferences({ allowAIChat: true, darkMode: 'auto' });
+                  setToast({
+                    message: 'All data cleared successfully',
+                    type: 'success'
+                  });
+                }}
+                className="w-full px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/20 dark:hover:bg-red-900/30 rounded-lg transition-colors duration-200"
+              >
+                Clear All Data
+              </button>
             </div>
           </GlassCard>
         )}
 
         {/* AI Context Info */}
-        {hasResults && userPreferences.allowAIChat && (
+        {storage.loadResults().length > 0 && userPreferences.allowAIChat && (
           <GlassCard className="mb-6 p-4 border-green-200 dark:border-green-700 bg-green-50/50 dark:bg-green-900/20">
             <div className="flex items-start space-x-3">
-              <Bot className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
               <div>
                 <h4 className="font-medium text-green-800 dark:text-green-200 mb-1">
                   AI Context Enabled
@@ -255,65 +265,23 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
         )}
 
         {/* Chat Interface */}
-        <GlassCard className="h-[600px] overflow-hidden">
+        <div className="h-[600px] md:h-[700px]">
           <ChatUI
             messages={messages}
             onSendMessage={handleSendMessage}
-            isLoading={isLoading || isTyping}
-            className="flex-1"
-            typingMessage={typingMessage}
+            isLoading={isLoading}
+            className="flex-1 h-full"
           />
-        </GlassCard>
-
-        {/* Quick Actions */}
-        <div className="mt-6 grid md:grid-cols-2 gap-4">
-          <GlassCard className="p-4 text-center">
-            <h3 className="font-medium text-slate-800 dark:text-slate-200 mb-2">
-              Need a Screening?
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-              Take a quick screening to get personalized insights
-            </p>
-            <button
-              onClick={() => onNavigate('screen')}
-              className="glass-button bg-primary-500 text-white hover:bg-primary-600"
-            >
-              Start Screening
-            </button>
-          </GlassCard>
-
-          <GlassCard className="p-4 text-center">
-            <h3 className="font-medium text-slate-800 dark:text-slate-200 mb-2">
-              View Results
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-              Review your screening results and insights
-            </p>
-            <button
-              onClick={() => onNavigate('results')}
-              className="glass-button"
-            >
-              See Results
-            </button>
-          </GlassCard>
         </div>
 
-        {/* Disclaimer */}
-        <GlassCard className="mt-6 p-4 border-amber-200 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/20">
-          <div className="flex items-start space-x-3">
-            <MessageCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-            <div>
-              <h4 className="font-medium text-amber-800 dark:text-amber-200 mb-1">
-                AI Chat Disclaimer
-              </h4>
-              <p className="text-sm text-amber-700 dark:text-amber-300">
-                I'm here to provide educational information and support, not medical advice. 
-                Always consult healthcare professionals for medical concerns. 
-                Your conversations are private and stored locally on your device.
-              </p>
-            </div>
-          </div>
-        </GlassCard>
+        {/* Toast */}
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
       </div>
     </div>
   );
