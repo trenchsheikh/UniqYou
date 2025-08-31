@@ -8,20 +8,20 @@
   }
   
   body {
-    @apply bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800;
-    @apply text-slate-800 dark:text-slate-200;
+    @apply bg-gradient-to-br from-slate-50 to-blue-50;
+    @apply text-slate-800;
     @apply min-h-screen;
   }
   
   * {
-    @apply border-slate-200 dark:border-slate-700;
+    @apply border-slate-200;
   }
 }
 
 @layer components {
   .glass {
-    @apply backdrop-blur-xl bg-white/10 dark:bg-slate-900/20;
-    @apply border border-white/20 dark:border-slate-700/30;
+    @apply backdrop-blur-xl bg-white/10;
+    @apply border border-white/20;
     @apply shadow-glass;
   }
   
@@ -32,14 +32,14 @@
   
   .glass-button {
     @apply glass rounded-xl px-6 py-3;
-    @apply hover:bg-white/20 dark:hover:bg-slate-800/30;
+    @apply hover:bg-white/20;
     @apply active:scale-95 transition-all duration-200;
     @apply focus-visible:ring-2 ring-primary-500/50 outline-none;
   }
   
   .glass-input {
     @apply glass rounded-xl px-4 py-3;
-    @apply focus:bg-white/20 dark:focus:bg-slate-800/30;
+    @apply focus:bg-white/20;
     @apply focus-visible:ring-2 ring-primary-500/50 outline-none;
     @apply transition-all duration-200;
   }
@@ -82,10 +82,10 @@
 /* iOS-optimized glass button */
 .glass-button {
   @apply px-4 py-3 rounded-2xl transition-all duration-200;
-  @apply bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm;
-  @apply border border-white/20 dark:border-slate-700/30;
-  @apply text-slate-800 dark:text-slate-200;
-  @apply hover:bg-white dark:hover:bg-slate-700;
+  @apply bg-white/80 backdrop-blur-sm;
+  @apply border border-white/20;
+  @apply text-slate-800;
+  @apply hover:bg-white;
   @apply focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:outline-none;
   @apply shadow-sm hover:shadow-md;
   min-height: 44px;
@@ -108,8 +108,8 @@
 /* iOS-optimized secondary button */
 .btn-secondary {
   @apply px-4 py-3 rounded-2xl transition-all duration-200;
-  @apply bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600;
-  @apply text-slate-700 dark:text-slate-300 font-medium;
+  @apply bg-slate-100 hover:bg-slate-200;
+  @apply text-slate-700 font-medium;
   @apply focus-visible:ring-2 focus-visible:ring-slate-500/50 focus-visible:outline-none;
   @apply shadow-sm hover:shadow-md;
   min-height: 44px;

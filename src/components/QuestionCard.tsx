@@ -52,17 +52,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     }
   };
 
-  // Auto-save text input when component unmounts (user navigates away)
-  React.useEffect(() => {
-    return () => {
-      // If user has selected an option but is leaving without clicking next,
-      // save the text input with the selected option
-      if (response?.value !== undefined && textInput.trim()) {
-        onResponse(question.id, response.value, textInput);
-      }
-    };
-  }, [question.id, textInput, response?.value, onResponse]);
-
   return (
     <GlassCard className={cn('w-full max-w-2xl mx-auto', className)}>
       <div className="space-y-6">
@@ -121,7 +110,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             onChange={handleTextInputChange}
             placeholder={question.textInputPlaceholder || 'Add any additional details, examples, or context that might help...'}
             className={cn(
-              'w-full p-3 rounded-lg border border-slate-300 dark:border-slate-600',
+              'w-full p-3 rounded-lg border border-slate-300 dark:border-slate-600 ios-input',
               'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100',
               'focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 focus:outline-none',
               'resize-none transition-all duration-200',
@@ -131,7 +120,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             maxLength={500}
           />
           <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
-            <span>Optional - helps provide more context</span>
+            <span>
+              {response?.value !== undefined && textInput.trim() ? '✅ Context saved' : 'Optional - helps provide more context'}
+            </span>
             <span>{textInput.length}/500</span>
           </div>
         </div>

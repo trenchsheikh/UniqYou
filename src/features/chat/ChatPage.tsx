@@ -135,7 +135,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Header */}
         <div className="mb-6">
@@ -145,19 +145,19 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
               className="btn-secondary p-2"
               aria-label="Go back to home"
             >
-              <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <ArrowLeft className="w-5 h-5 text-slate-600" />
             </button>
             
             <div className="flex-1 text-center">
-              <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
+              <h1 className="text-2xl font-bold text-slate-800">
                 Chat with AI Dr. Chen
               </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-slate-600">
                 Your AI companion for learning and attention support
               </p>
               <div className="flex items-center justify-center mt-2 space-x-2">
                 <div className={`w-2 h-2 rounded-full ${apiAvailable ? 'bg-green-500' : 'bg-amber-500'}`}></div>
-                <span className="text-xs text-slate-500 dark:text-slate-400">
+                <span className="text-xs text-slate-500">
                   {apiAvailable ? 'AI Connected' : 'Offline Mode'}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
               className="btn-secondary p-2"
               aria-label="Chat settings"
             >
-              <Settings className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <Settings className="w-5 h-5 text-slate-600" />
             </button>
           </div>
         </div>
@@ -176,12 +176,12 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
         {/* Settings Panel */}
         {showSettings && (
           <GlassCard className="mb-6 p-6">
-            <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
+            <h2 className="text-lg font-semibold text-slate-800 mb-4">
               Chat Settings
             </h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <label htmlFor="ai-access" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label htmlFor="ai-access" className="text-sm font-medium text-slate-700">
                   Allow AI to access screening data
                 </label>
                 <input
@@ -202,38 +202,11 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <label htmlFor="dark-mode" className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Dark Mode
-                </label>
-                <select
-                  id="dark-mode"
-                  value={userPreferences.darkMode}
-                  onChange={(e) => {
-                    const newPrefs = { ...userPreferences, darkMode: e.target.value as 'light' | 'dark' | 'auto' };
-                    setUserPreferences(newPrefs);
-                    storage.savePreferences(newPrefs);
-                    
-                    // Apply theme
-                    if (newPrefs.darkMode === 'dark' || (newPrefs.darkMode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                      document.documentElement.classList.add('dark');
-                    } else {
-                      document.documentElement.classList.remove('dark');
-                    }
-                  }}
-                  className="px-3 py-2 text-sm bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                >
-                  <option value="auto">Auto</option>
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                </select>
-              </div>
-              
               <button
                 onClick={() => {
                   storage.clearAll();
                   setMessages([]);
-                  setUserPreferences({ allowAIChat: true, darkMode: 'auto' });
+                  setUserPreferences({ allowAIChat: true });
                   setToast({
                     message: 'All data cleared successfully',
                     type: 'success'
@@ -249,13 +222,13 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
 
         {/* AI Context Info */}
         {storage.loadResults().length > 0 && userPreferences.allowAIChat && (
-          <GlassCard className="mb-6 p-4 border-green-200 dark:border-green-700 bg-green-50/50 dark:bg-green-900/20">
+          <GlassCard className="mb-6 p-4 border-green-200 bg-green-50/50">
             <div className="flex items-start space-x-3">
               <div>
-                <h4 className="font-medium text-green-800 dark:text-green-200 mb-1">
+                <h4 className="font-medium text-green-800 mb-1">
                   AI Context Enabled
                 </h4>
-                <p className="text-sm text-green-700 dark:text-green-300">
+                <p className="text-sm text-green-700">
                   I can see your screening results and provide personalized advice. 
                   Ask me about specific areas or strategies!
                 </p>

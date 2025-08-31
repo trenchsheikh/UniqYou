@@ -58,18 +58,20 @@ export const useScreening = () => {
     setResponses(prev => {
       const existingIndex = prev.findIndex(r => r.questionId === questionId);
       if (existingIndex >= 0) {
+        // Update existing response
         const updated = [...prev];
-        // If this is a temporary response (value = 0) and we already have a real response, preserve the real value
-        if (value === 0 && updated[existingIndex].value !== 0) {
-          updated[existingIndex] = { ...updated[existingIndex], textInput };
-        } else {
-          updated[existingIndex] = newResponse;
-        }
+        updated[existingIndex] = newResponse;
         return updated;
       }
+      // Add new response
       return [...prev, newResponse];
     });
   }, []);
+
+  // Memoize the onResponse function to prevent infinite loops
+  const onResponse = useCallback((questionId: string, value: number, textInput?: string) => {
+    submitResponse(questionId, value, textInput);
+  }, [submitResponse]);
 
   const goToNext = useCallback(() => {
     if (currentStep < questions.length - 1) {
@@ -283,6 +285,7 @@ export const useScreening = () => {
     
     // Actions
     submitResponse,
+    onResponse,
     completeScreening,
     resetScreening,
     

@@ -59,14 +59,12 @@ export const storage = {
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.PREFERENCES);
       return stored ? JSON.parse(stored) : {
-        allowAIChat: false,
-        darkMode: 'auto'
+        allowAIChat: false
       };
     } catch (error) {
       console.error('Failed to load preferences:', error);
       return {
-        allowAIChat: false,
-        darkMode: 'auto'
+        allowAIChat: false
       };
     }
   },

@@ -25,7 +25,7 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
     canGoNext,
     canGoPrevious,
     isLastStep,
-    submitResponse,
+    onResponse,
     completeScreening,
     resetScreening,
     totalQuestions
@@ -40,7 +40,7 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
   }, [currentStep, getCurrentQuestion, totalQuestions]);
 
   const handleResponse = (questionId: string, value: number, textInput?: string) => {
-    submitResponse(questionId, value, textInput);
+    onResponse(questionId, value, textInput);
   };
 
   const handleNext = () => {

@@ -48,7 +48,6 @@ export interface ScreeningResult {
 
 export interface UserPreferences {
   allowAIChat: boolean;
-  darkMode: 'light' | 'dark' | 'auto';
 }
 
 export interface ChatMessage {

@@ -31,8 +31,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   const handleConsent = (allowAI: boolean) => {
     storage.savePreferences({ 
-      allowAIChat: allowAI,
-      darkMode: 'auto'
+      allowAIChat: allowAI
     });
     setShowConsent(false);
     setToast({
