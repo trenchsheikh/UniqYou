@@ -99,7 +99,7 @@ Current context:`;
       if (this.context.responses && this.context.responses.length > 0) {
         const textInputs = this.context.responses
           .filter(r => r.textInput && r.textInput.trim().length > 0)
-          .slice(0, 8); // Increased limit to capture more context
+          .slice(0, 10); // Increased limit to capture more context
         
         if (textInputs.length > 0) {
           prompt += `\n\nThe user provided detailed context in their responses:\n`;
@@ -110,7 +110,7 @@ Current context:`;
             prompt += `${index + 1}. ${question} (${optionText}): "${response.textInput}"\n`;
           });
           
-          prompt += `\nUse this detailed context to provide more personalized and specific advice. The user has shared specific examples and experiences that you can reference in your responses.`;
+          prompt += `\n\nIMPORTANT: Use this detailed context to provide highly personalized and specific advice. The user has shared specific examples, experiences, and situations that you can reference directly in your responses. When they ask questions, relate your advice to their specific context and examples.`;
         }
       }
     } else {

@@ -16,19 +16,22 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   onResponse,
   className = ''
 }) => {
-  const [textInput, setTextInput] = useState('');
+  const [textInput, setTextInput] = useState(response?.textInput || '');
 
-  // Reset text input when question changes
-  React.useEffect(() => {
-    setTextInput('');
-  }, [question.id]);
-
-  // Update text input when response changes (e.g., when navigating between questions)
+  // Update text input when response changes (e.g., when returning to a question)
   React.useEffect(() => {
     setTextInput(response?.textInput || '');
   }, [response?.textInput]);
 
+  // Reset text input when question changes to a new question
+  React.useEffect(() => {
+    if (!response?.textInput) {
+      setTextInput('');
+    }
+  }, [question.id, response?.textInput]);
+
   const handleOptionClick = (value: number) => {
+    // Save both the selected option AND the text input together
     onResponse(question.id, value, textInput);
   };
 
@@ -43,28 +46,22 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     const newText = e.target.value;
     setTextInput(newText);
     
-    // Always save text input, even if no option is selected yet
-    // This ensures user's context is never lost
+    // If an option is already selected, update the response with new text
     if (response?.value !== undefined) {
-      // If an option is selected, update the full response
       onResponse(question.id, response.value, newText);
-    } else {
-      // If no option is selected yet, create a temporary response with just the text
-      // The value will be updated when an option is selected
-      onResponse(question.id, 0, newText); // Use 0 as temporary value
     }
   };
 
-  // Auto-save text input when component unmounts or user navigates away
+  // Auto-save text input when component unmounts (user navigates away)
   React.useEffect(() => {
     return () => {
-      // Save any unsaved text input when leaving the question
-      if (textInput.trim() && textInput !== (response?.textInput || '')) {
-        const valueToSave = response?.value !== undefined ? response.value : 0;
-        onResponse(question.id, valueToSave, textInput);
+      // If user has selected an option but is leaving without clicking next,
+      // save the text input with the selected option
+      if (response?.value !== undefined && textInput.trim()) {
+        onResponse(question.id, response.value, textInput);
       }
     };
-  }, [question.id, textInput, response?.textInput, response?.value, onResponse]);
+  }, [question.id, textInput, response?.value, onResponse]);
 
   return (
     <GlassCard className={cn('w-full max-w-2xl mx-auto', className)}>

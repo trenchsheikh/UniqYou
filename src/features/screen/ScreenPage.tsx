@@ -146,12 +146,12 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
                       <p className="text-primary-600 dark:text-primary-400 text-sm mt-1">
                         Your answer: {option?.label}
                       </p>
-                      {response.textInput && (
-                        <div className="mt-2 p-3 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                            Additional details:
+                      {response.textInput && response.textInput.trim() && (
+                        <div className="mt-2 p-3 bg-slate-50 dark:bg-slate-800/30 rounded-lg border-l-4 border-primary-500">
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">
+                            📝 Your Context:
                           </p>
-                          <p className="text-slate-700 dark:text-slate-300 text-sm">
+                          <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
                             {response.textInput}
                           </p>
                         </div>
