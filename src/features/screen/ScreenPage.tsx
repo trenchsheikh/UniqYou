@@ -109,14 +109,14 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
               <div className="flex gap-3">
                 <button
                   onClick={handlePrevious}
-                  className="glass-button"
+                  className="btn-secondary"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Questions
                 </button>
                 <button
                   onClick={handleComplete}
-                  className="glass-button bg-primary-500 text-white hover:bg-primary-600"
+                  className="btn-primary"
                 >
                   Complete Screening
                 </button>
@@ -162,7 +162,7 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
                         setShowReview(false);
                         goToStep(index);
                       }}
-                      className="glass-button p-2 ml-4"
+                      className="btn-secondary p-2 ml-4"
                     >
                       Edit
                     </button>
@@ -192,7 +192,7 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
               onClick={handlePrevious}
               disabled={!canGoPrevious()}
               className={cn(
-                'glass-button flex items-center space-x-2',
+                'btn-secondary flex items-center space-x-2',
                 !canGoPrevious() && 'opacity-50 cursor-not-allowed'
               )}
             >
@@ -208,7 +208,7 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
               onClick={handleNext}
               disabled={!canGoNext()}
               className={cn(
-                'glass-button flex items-center space-x-2',
+                'btn-primary flex items-center space-x-2',
                 !canGoNext() && 'opacity-50 cursor-not-allowed'
               )}
             >
@@ -231,7 +231,7 @@ export const ScreenPage: React.FC<ScreenPageProps> = ({ onNavigate }) => {
         <div className="flex justify-center mt-8">
           <button
             onClick={handleReset}
-            className="glass-button text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+            className="btn-danger"
           >
             Start Over
           </button>

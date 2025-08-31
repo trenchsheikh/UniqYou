@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart3, Lightbulb, RefreshCw, Share2, MessageCircle } from 'lucide-react';
+import { BarChart3, Lightbulb, MessageCircle, ClipboardList } from 'lucide-react';
 import { GlassCard } from '../../components/GlassCard';
 import { ResultBadge } from '../../components/ResultBadge';
 import { ScoreBar } from '../../components/ScoreBar';
@@ -26,41 +26,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ onNavigate }) => {
     accessibility.announcePageChange('Results');
   }, []);
 
-  const handleNewScreening = () => {
-    if (confirm('Start a new screening? This will clear your current results.')) {
-      storage.clearAll();
-      setResults([]);
-      setHasData(false);
-      onNavigate('screen');
-    }
-  };
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-                  title: 'My UniqYou Screening Results',
-        text: 'Check out my learning and attention screening results from UniqYou!',
-          url: window.location.href
-        });
-      } catch (error) {
-        console.log('Share cancelled');
-      }
-    } else {
-      // Fallback: copy to clipboard
-      const resultsText = results.map(r => 
-        `${getDomainLabel(r.domain)}: ${r.band} (${r.rawScore}/${r.maxScore})`
-      ).join('\n');
-      
-      try {
-        await navigator.clipboard.writeText(resultsText);
-        alert('Results copied to clipboard!');
-      } catch (error) {
-        alert('Failed to copy results');
-      }
-    }
-  };
-
   if (!hasData || results.length === 0) {
     return (
       <div className="min-h-screen pb-20 pt-8 px-4">
@@ -75,7 +40,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ onNavigate }) => {
             </p>
             <button
               onClick={() => onNavigate('screen')}
-              className="glass-button bg-primary-500 text-white hover:bg-primary-600"
+              className="btn-primary"
             >
               Start Screening
             </button>
@@ -98,20 +63,20 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ onNavigate }) => {
             Here's what your responses tell us about your learning and attention patterns
           </p>
           
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
-              onClick={handleNewScreening}
-              className="glass-button text-sm"
+              onClick={() => onNavigate('screen')}
+              className="btn-primary"
             >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              New Screening
+              <ClipboardList className="w-4 h-4 mr-2" />
+              Take Another Screening
             </button>
             <button
-              onClick={handleShare}
-              className="glass-button text-sm"
+              onClick={() => onNavigate('chat')}
+              className="btn-secondary"
             >
-              <Share2 className="w-4 h-4 mr-2" />
-              Share Results
+              <MessageCircle className="w-4 h-4 mr-2" />
+              Chat with AI Dr. Chen
             </button>
           </div>
         </GlassCard>

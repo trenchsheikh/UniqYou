@@ -16,7 +16,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   onResponse,
   className = ''
 }) => {
-  const [textInput, setTextInput] = useState(response?.textInput || '');
+  const [textInput, setTextInput] = useState('');
+
+  // Reset text input when question changes
+  React.useEffect(() => {
+    setTextInput('');
+  }, [question.id]);
 
   // Update text input when response changes (e.g., when navigating between questions)
   React.useEffect(() => {

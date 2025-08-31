@@ -73,21 +73,36 @@ export const useScreening = () => {
 
   const goToNext = useCallback(() => {
     if (currentStep < questions.length - 1) {
+      // Clear the current question's response when moving to next
+      const currentQuestion = questions[currentStep];
+      if (currentQuestion) {
+        setResponses(prev => prev.filter(r => r.questionId !== currentQuestion.id));
+      }
       setCurrentStep(prev => prev + 1);
     }
   }, [currentStep]);
 
   const goToPrevious = useCallback(() => {
     if (currentStep > 0) {
+      // Clear the current question's response when going back
+      const currentQuestion = questions[currentStep];
+      if (currentQuestion) {
+        setResponses(prev => prev.filter(r => r.questionId !== currentQuestion.id));
+      }
       setCurrentStep(prev => prev - 1);
     }
   }, [currentStep]);
 
   const goToStep = useCallback((step: number) => {
     if (step >= 0 && step < questions.length) {
+      // Clear the current question's response when jumping to a step
+      const currentQuestion = questions[currentStep];
+      if (currentQuestion) {
+        setResponses(prev => prev.filter(r => r.questionId !== currentQuestion.id));
+      }
       setCurrentStep(step);
     }
-  }, []);
+  }, [currentStep, questions.length]);
 
   const getDomainTips = useCallback((domain: Domain): string[] => {
     const tipsMap: Record<Domain, string[]> = {

@@ -79,6 +79,56 @@
   touch-action: manipulation;
 }
 
+/* iOS-optimized glass button */
+.glass-button {
+  @apply px-4 py-3 rounded-2xl transition-all duration-200;
+  @apply bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm;
+  @apply border border-white/20 dark:border-slate-700/30;
+  @apply text-slate-800 dark:text-slate-200;
+  @apply hover:bg-white dark:hover:bg-slate-700;
+  @apply focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:outline-none;
+  @apply shadow-sm hover:shadow-md;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* iOS-optimized primary button */
+.btn-primary {
+  @apply px-4 py-3 rounded-2xl transition-all duration-200;
+  @apply bg-primary-500 hover:bg-primary-600;
+  @apply text-white font-medium;
+  @apply focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:outline-none;
+  @apply shadow-sm hover:shadow-md;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* iOS-optimized secondary button */
+.btn-secondary {
+  @apply px-4 py-3 rounded-2xl transition-all duration-200;
+  @apply bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600;
+  @apply text-slate-700 dark:text-slate-300 font-medium;
+  @apply focus-visible:ring-2 focus-visible:ring-slate-500/50 focus-visible:outline-none;
+  @apply shadow-sm hover:shadow-md;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* iOS-optimized danger button */
+.btn-danger {
+  @apply px-4 py-3 rounded-2xl transition-all duration-200;
+  @apply bg-red-500 hover:bg-red-600;
+  @apply text-white font-medium;
+  @apply focus-visible:ring-2 focus-visible:ring-red-500/50 focus-visible:outline-none;
+  @apply shadow-sm hover:shadow-md;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
 /* Chat message optimizations */
 .chat-message {
   word-break: break-word;

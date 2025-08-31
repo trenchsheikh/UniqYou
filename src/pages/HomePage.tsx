@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Brain, ArrowRight, MessageCircle, Shield, ClipboardList } from 'lucide-react';
+import { Brain, MessageCircle, Shield, ClipboardList } from 'lucide-react';
 import { GlassCard } from '../components/GlassCard';
 import { Toast } from '../components/Toast';
 import type { ToastType } from '../components/Toast';
@@ -68,14 +68,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={handleStartScreening}
-              className="glass-button bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 flex items-center space-x-2"
+              className="btn-primary"
             >
-              <span>Start Screening</span>
-              <ArrowRight className="w-5 h-5" />
+              <ClipboardList className="w-5 h-5 mr-2" />
+              Start Screening
             </button>
             <button
                   onClick={() => onNavigate('chat')}
-                  className="px-4 py-2 rounded-lg bg-primary-500 text-white text-sm font-medium hover:bg-primary-600 transition-colors duration-200 flex items-center justify-center space-x-2"
+                  className="btn-secondary"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>Chat with AI Dr. Chen</span>

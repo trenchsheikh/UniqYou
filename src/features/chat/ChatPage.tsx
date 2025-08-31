@@ -142,7 +142,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => onNavigate('home')}
-              className="p-2 rounded-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/20 dark:border-slate-700/30 hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 shadow-sm"
+              className="btn-secondary p-2"
               aria-label="Go back to home"
             >
               <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
@@ -165,7 +165,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
             
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="p-2 rounded-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/20 dark:border-slate-700/30 hover:bg-white dark:hover:bg-slate-700 transition-all duration-200 shadow-sm"
+              className="btn-secondary p-2"
               aria-label="Chat settings"
             >
               <Settings className="w-5 h-5 text-slate-600 dark:text-slate-400" />
@@ -239,7 +239,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({ onNavigate }) => {
                     type: 'success'
                   });
                 }}
-                className="w-full px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/20 dark:hover:bg-red-900/30 rounded-lg transition-colors duration-200"
+                className="btn-danger"
               >
                 Clear All Data
               </button>
