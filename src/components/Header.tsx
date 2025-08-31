@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick, showMenu = false })
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent">
-                RUOkay
+                UniqYou
               </h1>
               <p className="text-xs text-slate-600 dark:text-slate-400">
                 Learning & Attention Screening

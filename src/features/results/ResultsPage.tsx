@@ -39,8 +39,8 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ onNavigate }) => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'My RUOkay Screening Results',
-          text: 'Check out my learning and attention screening results from RUOkay!',
+                  title: 'My UniqYou Screening Results',
+        text: 'Check out my learning and attention screening results from UniqYou!',
           url: window.location.href
         });
       } catch (error) {

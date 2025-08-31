@@ -99,14 +99,18 @@ Current context:`;
       if (this.context.responses && this.context.responses.length > 0) {
         const textInputs = this.context.responses
           .filter(r => r.textInput && r.textInput.trim().length > 0)
-          .slice(0, 5); // Limit to 5 examples to avoid overwhelming the context
+          .slice(0, 8); // Increased limit to capture more context
         
         if (textInputs.length > 0) {
-          prompt += `\nThe user provided additional context in their responses:\n`;
+          prompt += `\n\nThe user provided detailed context in their responses:\n`;
           textInputs.forEach((response, index) => {
             const question = this.getQuestionText(response.questionId);
-            prompt += `${index + 1}. ${question}: "${response.textInput}"\n`;
+            const optionValue = response.value;
+            const optionText = this.getOptionText(response.questionId, optionValue.toString());
+            prompt += `${index + 1}. ${question} (${optionText}): "${response.textInput}"\n`;
           });
+          
+          prompt += `\nUse this detailed context to provide more personalized and specific advice. The user has shared specific examples and experiences that you can reference in your responses.`;
         }
       }
     } else {
@@ -138,6 +142,84 @@ Current context:`;
       'sensory-processing': 'Sensory Processing'
     };
     return domainLabels[domain] || 'General';
+  }
+
+  private getOptionText(questionId: string, optionValue: string): string {
+    // This would ideally come from the questions data, but for now we'll use a simple mapping
+    const domain = questionId.split('-')[0];
+    const optionLabels: Record<string, Record<string, string>> = {
+      'adhd': {
+        'hyperactivity': 'Hyperactivity',
+        'inattention': 'Inattention',
+        'combined': 'Combined'
+      },
+      'autism': {
+        'high-functioning': 'High-Functioning',
+        'low-functioning': 'Low-Functioning',
+        'moderate': 'Moderate'
+      },
+      'dyslexia': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'dyscalculia': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'dysgraphia': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'dyspraxia': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'auditory-processing': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'visual-processing': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'tourettes': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'ocd': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'anxiety': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'depression': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'social-communication': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      },
+      'sensory-processing': {
+        'severe': 'Severe',
+        'moderate': 'Moderate',
+        'mild': 'Mild'
+      }
+    };
+    return optionLabels[domain]?.[optionValue] || optionValue;
   }
 
   async ask(message: string): Promise<AIResponse> {

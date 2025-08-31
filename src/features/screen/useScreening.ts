@@ -59,7 +59,12 @@ export const useScreening = () => {
       const existingIndex = prev.findIndex(r => r.questionId === questionId);
       if (existingIndex >= 0) {
         const updated = [...prev];
-        updated[existingIndex] = newResponse;
+        // If this is a temporary response (value = 0) and we already have a real response, preserve the real value
+        if (value === 0 && updated[existingIndex].value !== 0) {
+          updated[existingIndex] = { ...updated[existingIndex], textInput };
+        } else {
+          updated[existingIndex] = newResponse;
+        }
         return updated;
       }
       return [...prev, newResponse];

@@ -34,7 +34,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigate }) => {
             Our Commitment to Privacy
           </h2>
           <p className="text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
-            At RUOkay, we believe that privacy is a fundamental human right. We've designed our 
+            At UniqYou, we believe that privacy is a fundamental human right. We've designed our 
             platform with privacy-first principles, ensuring that your personal information stays 
             exactly where it belongs - with you.
           </p>
@@ -237,7 +237,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigate }) => {
           </h2>
           <div className="space-y-3 text-slate-700 dark:text-slate-300">
             <p>
-              RUOkay is designed to be completely self-contained:
+              UniqYou is designed to be completely self-contained:
             </p>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li><strong>No Analytics:</strong> We don't use Google Analytics, Mixpanel, or similar services</li>
@@ -280,7 +280,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigate }) => {
           </h2>
           <div className="space-y-3 text-amber-700 dark:text-amber-300">
             <p>
-              <strong>Age Restriction:</strong> RUOkay is designed for adults (18+) and is not intended for children.
+              <strong>Age Restriction:</strong> UniqYou is designed for adults (18+) and is not intended for children.
             </p>
             <p>
               <strong>Parental Guidance:</strong> If you're a parent or guardian, please supervise any use by minors.

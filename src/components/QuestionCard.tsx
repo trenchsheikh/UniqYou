@@ -18,6 +18,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const [textInput, setTextInput] = useState(response?.textInput || '');
 
+  // Update text input when response changes (e.g., when navigating between questions)
+  React.useEffect(() => {
+    setTextInput(response?.textInput || '');
+  }, [response?.textInput]);
+
   const handleOptionClick = (value: number) => {
     onResponse(question.id, value, textInput);
   };
@@ -32,11 +37,29 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const handleTextInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     setTextInput(newText);
-    // Update response if an option is already selected
+    
+    // Always save text input, even if no option is selected yet
+    // This ensures user's context is never lost
     if (response?.value !== undefined) {
+      // If an option is selected, update the full response
       onResponse(question.id, response.value, newText);
+    } else {
+      // If no option is selected yet, create a temporary response with just the text
+      // The value will be updated when an option is selected
+      onResponse(question.id, 0, newText); // Use 0 as temporary value
     }
   };
+
+  // Auto-save text input when component unmounts or user navigates away
+  React.useEffect(() => {
+    return () => {
+      // Save any unsaved text input when leaving the question
+      if (textInput.trim() && textInput !== (response?.textInput || '')) {
+        const valueToSave = response?.value !== undefined ? response.value : 0;
+        onResponse(question.id, valueToSave, textInput);
+      }
+    };
+  }, [question.id, textInput, response?.textInput, response?.value, onResponse]);
 
   return (
     <GlassCard className={cn('w-full max-w-2xl mx-auto', className)}>

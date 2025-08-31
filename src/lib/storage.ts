@@ -1,10 +1,10 @@
 import type { Response, ScreeningResult, UserPreferences } from '../types';
 
 const STORAGE_KEYS = {
-  RESPONSES: 'ruokay_responses',
-  RESULTS: 'ruokay_results',
-  PREFERENCES: 'ruokay_preferences',
-  CONSENT: 'ruokay_consent',
+  RESPONSES: 'uniqyou_responses',
+  RESULTS: 'uniqyou_results',
+  PREFERENCES: 'uniqyou_preferences',
+  CONSENT: 'uniqyou_consent',
 } as const;
 
 export const storage = {
