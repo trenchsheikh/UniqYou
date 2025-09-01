@@ -197,6 +197,6 @@ UniqYou is an educational tool designed to promote understanding and self-awaren
 ## Support
 
 For questions, suggestions, or support:
-- Email: hello@uniqyou.app
+- Email: samitahir018@gmail.com
 - Take a screening to get started
 - Chat with our AI companion for guidance
